@@ -112,7 +112,10 @@
                     showNextQuestion(tree[key].next);
                 } else if (key.endsWith(".Ende")) {
                     console.log("Ende erreicht, Weiterleitung zu:", tree[key]);
-                    window.location.href = tree[key];
+                    // Verwendung von setTimeout, um sicherzustellen, dass die Weiterleitung nach der Animation erfolgt
+                    setTimeout(() => {
+                        window.location.href = tree[key]; // Weiterleitung zur URL
+                    }, 500);  // 500ms Verzögerung, um sicherzustellen, dass die Animation fertig ist
                 }
             }, 500);
         }
