@@ -80,6 +80,7 @@
     </div>
 
     <script>
+        // Baumstruktur mit den möglichen Antworten und Weiterleitungen
         const tree = {
             "1": { 
                 text: "Remote / Citrix", 
@@ -99,12 +100,14 @@
 
         const container = document.getElementById("selfhelp-container");
 
+        // Funktion, die beim Klick auf eine Option ausgelöst wird
         function handleSelection(option, key) {
             option.classList.add("zoom");
 
             setTimeout(() => {
                 option.classList.remove("zoom");
 
+                // Wenn eine Weiterleitung existiert
                 if (tree[key]?.next) {
                     showNextQuestion(tree[key].next);
                 } else if (key.endsWith(".Ende")) {
@@ -114,28 +117,31 @@
             }, 500);
         }
 
+        // Funktion zum Anzeigen der nächsten Frage
         function showNextQuestion(subTree) {
-            container.innerHTML = "";
+            container.innerHTML = "";  // Clear the container
 
             const question = document.createElement("p");
             question.classList.add("question");
-            question.textContent = "Wähle eine Option:";
+            question.textContent = "Wähle eine Option:";  // Neue Frage
             container.appendChild(question);
 
             const optionsDiv = document.createElement("div");
             optionsDiv.classList.add("options");
 
+            // Erzeuge die neuen Optionen
             Object.keys(subTree).forEach(subKey => {
                 const div = document.createElement("div");
                 div.classList.add("option");
                 div.textContent = subTree[subKey].text;
-                div.onclick = () => handleSelection(div, subKey);
+                div.onclick = () => handleSelection(div, subKey);  // Klick-Event für jede Option
                 optionsDiv.appendChild(div);
             });
 
             container.appendChild(optionsDiv);
         }
 
+        // Initiale Auswahl-Behandlung
         document.querySelectorAll(".option").forEach(option => {
             option.onclick = () => handleSelection(option, option.dataset.class);
         });
