@@ -12,15 +12,24 @@
             padding: 0;
             text-align: center;
             background-color: white;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
 
         .header {
             display: flex;
             align-items: center;
             padding: 20px;
-            background-color: #001E49;  /* Dunkelblau */
+            background-color: #001E49;
             color: white;
-            border-bottom: 3px solid #006F6A;  /* Türkis */
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            border-bottom: 3px solid #006F6A;
         }
 
         .header img {
@@ -31,38 +40,51 @@
         .question {
             font-size: 24px;
             font-weight: bold;
-            margin: 30px 0;
-            color: #001E49;
+            margin-bottom: 30px;
+            color: #FF007F; /* NAH.SH Pink */
         }
 
         .options {
             display: flex;
-            justify-content: center;
-            gap: 20px;  /* Abstand zwischen den Buttons */
-            margin: 20px 0;
+            justify-content: space-evenly;
+            width: 80%;
+            gap: 20px;
         }
 
         .option {
-            padding: 15px 25px;
+            padding: 15px 30px;
             font-size: 18px;
             font-weight: bold;
-            border: 2px solid #006F6A;  /* Türkis */
+            border: 2px solid #006F6A;
             border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out, opacity 0.3s;
-            opacity: 1;
-            background-color: #ffffff;
+            background-color: white;
             color: #001E49;
+            transition: 0.3s;
+            min-width: 150px;
+            text-align: center;
         }
 
         .option:hover {
-            background-color: #006F6A;  /* Türkis */
+            background-color: #006F6A;
             color: white;
         }
 
-        .zoom {
-            transform: scale(1.1);
-            opacity: 0.5;
+        /* Blaues Dreieck in der unteren rechten Ecke */
+        .triangle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-left: 100vw solid transparent; /* Dreieck von links */
+            border-bottom: 50vh solid #001E49; /* Spitze nach unten rechts bis zur Mitte */
+            border-top: 0 solid transparent; /* Keine obere Seite */
+            z-index: -1;
+        }
+
+        .content {
+            z-index: 1;
         }
     </style>
 </head>
@@ -74,82 +96,19 @@
         <h1>Selbsthilfe</h1>
     </div>
 
-    <!-- Fragenbereich -->
-    <div id="selfhelp-container">
-        <p class="question">Wo arbeitest du?</p>
-        <div class="options">
-            <div class="option" data-class="1">Remote / Citrix</div>
-            <div class="option" data-class="2">Lokal / Im Büro</div>
+    <!-- Inhalt (Fragen und Optionen) -->
+    <div class="content">
+        <div id="selfhelp-container">
+            <p class="question">Wo arbeitest du?</p>
+            <div class="options">
+                <a href="/docs/help/LoginProbleme.html" class="option">Remote / Citrix</a>
+                <a href="/docs/help/Drucker.html" class="option">Lokal / Im Büro</a>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Baumstruktur mit den möglichen Antworten und Weiterleitungen
-        const tree = {
-            "1": { 
-                text: "Remote / Citrix", 
-                next: { 
-                    "1.1": { text: "Login-Probleme", next: { "1.Ende": "/docs/help/LoginProbleme.html" } },
-                    "1.2": { text: "Citrix Features", next: { "1.Ende": "/docs/help/CitrixFeatures.html" } }
-                } 
-            },
-            "2": { 
-                text: "Lokal / Im Büro", 
-                next: { 
-                    "2.1": { text: "Drucker funktioniert nicht", next: { "2.Ende": "/docs/help/Drucker.html" } },
-                    "2.2": { text: "Kein Internet", next: { "2.Ende": "/docs/help/Internet.html" } }
-                } 
-            }
-        };
+    <!-- Blaues Dreieck -->
+    <div class="triangle"></div>
 
-        const container = document.getElementById("selfhelp-container");
-
-        // Funktion, die beim Klick auf eine Option ausgelöst wird
-        function handleSelection(option, key) {
-            option.classList.add("zoom");
-
-            setTimeout(() => {
-                option.classList.remove("zoom");
-
-                // Wenn eine Weiterleitung existiert
-                if (tree[key]?.next) {
-                    showNextQuestion(tree[key].next);
-                } else if (key.endsWith(".Ende")) {
-                    console.log("Ende erreicht, Weiterleitung zu:", tree[key]);
-                    // Weiterleitung zur URL mit window.location.replace() für einen sauberen Redirect
-                    window.location.href = tree[key]; // Redirect zur Zielseite
-                }
-            }, 500);
-        }
-
-        // Funktion zum Anzeigen der nächsten Frage
-        function showNextQuestion(subTree) {
-            container.innerHTML = "";  // Clear the container
-
-            const question = document.createElement("p");
-            question.classList.add("question");
-            question.textContent = "Wähle eine Option:";  // Neue Frage
-            container.appendChild(question);
-
-            const optionsDiv = document.createElement("div");
-            optionsDiv.classList.add("options");
-
-            // Erzeuge die neuen Optionen
-            Object.keys(subTree).forEach(subKey => {
-                const div = document.createElement("div");
-                div.classList.add("option");
-                div.textContent = subTree[subKey].text;
-                div.onclick = () => handleSelection(div, subKey);  // Klick-Event für jede Option
-                optionsDiv.appendChild(div);
-            });
-
-            container.appendChild(optionsDiv);
-        }
-
-        // Initiale Auswahl-Behandlung
-        document.querySelectorAll(".option").forEach(option => {
-            option.onclick = () => handleSelection(option, option.dataset.class);
-        });
-    </script>
 </body>
 </html>
