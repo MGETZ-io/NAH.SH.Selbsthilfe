@@ -1,61 +1,144 @@
-<script>
-    const tree = {
-        "1": { 
-            text: "Remote / Citrix", 
-            next: { 
-                "1.1": { text: "Login-Probleme", next: { "1.Ende": "/docs/help/LoginProbleme.html" } },
-                "1.2": { text: "Citrix Features", next: { "1.Ende": "/docs/help/CitrixFeatures.html" } }
-            } 
-        },
-        "2": { 
-            text: "Lokal / Im Büro", 
-            next: { 
-                "2.1": { text: "Drucker funktioniert nicht", next: { "2.Ende": "/docs/help/Drucker.html" } },
-                "2.2": { text: "Kein Internet", next: { "2.Ende": "/docs/help/Internet.html" } }
-            } 
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAH.SH Selbsthilfe</title>
+    <link rel="icon" type="image/svg+xml" href="Logo.svg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: white;
         }
-    };
 
-    const container = document.getElementById("selfhelp-container");
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            border-bottom: 3px solid #003366;
+        }
 
-    function handleSelection(option, key) {
-        option.classList.add("zoom");
+        .header img {
+            height: 50px;
+            margin-right: 10px;
+        }
 
-        setTimeout(() => {
-            option.classList.remove("zoom");
+        .question {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 30px 0;
+        }
 
-            if (tree[key]?.next) {
-                showNextQuestion(tree[key].next);
-            } else if (key.endsWith(".Ende")) {
-                console.log("Ende erreicht, Weiterleitung zu:", tree[key]);
-                window.location.href = tree[key];
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid #006699;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, opacity 0.3s;
+            opacity: 1;
+        }
+
+        .option:hover {
+            background-color: #006699;
+            color: white;
+        }
+
+        .zoom {
+            transform: scale(1.1);
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header mit Logo -->
+    <div class="header">
+        <img src="Logo.svg" alt="NAH.SH Logo">
+        <h1>Selbsthilfe</h1>
+    </div>
+
+    <!-- Fragenbereich -->
+    <div id="selfhelp-container">
+        <p class="question">Wo arbeitest du?</p>
+        <div class="options">
+            <div class="option" data-class="1">Remote / Citrix</div>
+            <div class="option" data-class="2">Lokal / Im Büro</div>
+        </div>
+    </div>
+
+    <script>
+        const tree = {
+            "1": { 
+                text: "Remote / Citrix", 
+                next: { 
+                    "1.1": { text: "Login-Probleme", next: { "1.Ende": "/docs/help/LoginProbleme.html" } },
+                    "1.2": { text: "Citrix Features", next: { "1.Ende": "/docs/help/CitrixFeatures.html" } }
+                } 
+            },
+            "2": { 
+                text: "Lokal / Im Büro", 
+                next: { 
+                    "2.1": { text: "Drucker funktioniert nicht", next: { "2.Ende": "/docs/help/Drucker.html" } },
+                    "2.2": { text: "Kein Internet", next: { "2.Ende": "/docs/help/Internet.html" } }
+                } 
             }
-        }, 500);
-    }
+        };
 
-    function showNextQuestion(subTree) {
-        container.innerHTML = "";
+        const container = document.getElementById("selfhelp-container");
 
-        const question = document.createElement("p");
-        question.classList.add("question");
-        question.textContent = "Wähle eine Option:";
-        container.appendChild(question);
+        function handleSelection(option, key) {
+            option.classList.add("zoom");
 
-        const optionsDiv = document.createElement("div");
-        optionsDiv.classList.add("options");
+            setTimeout(() => {
+                option.classList.remove("zoom");
 
-        Object.keys(subTree).forEach(subKey => {
-            const div = document.createElement("div");
-            div.classList.add("option");
-            div.textContent = subTree[subKey].text;
-            div.onclick = () => handleSelection(div, subKey);
-            optionsDiv.appendChild(div);
+                if (tree[key]?.next) {
+                    showNextQuestion(tree[key].next);
+                } else if (key.endsWith(".Ende")) {
+                    console.log("Ende erreicht, Weiterleitung zu:", tree[key]);
+                    window.location.href = tree[key];
+                }
+            }, 500);
+        }
+
+        function showNextQuestion(subTree) {
+            container.innerHTML = "";
+
+            const question = document.createElement("p");
+            question.classList.add("question");
+            question.textContent = "Wähle eine Option:";
+            container.appendChild(question);
+
+            const optionsDiv = document.createElement("div");
+            optionsDiv.classList.add("options");
+
+            Object.keys(subTree).forEach(subKey => {
+                const div = document.createElement("div");
+                div.classList.add("option");
+                div.textContent = subTree[subKey].text;
+                div.onclick = () => handleSelection(div, subKey);
+                optionsDiv.appendChild(div);
+            });
+
+            container.appendChild(optionsDiv);
+        }
+
+        document.querySelectorAll(".option").forEach(option => {
+            option.onclick = () => handleSelection(option, option.dataset.class);
         });
-
-        container.appendChild(optionsDiv);
-    }
-
-    document.querySelectorAll(".option").forEach(option => {
-        option.onclick = () => handleSelection(option, option.dataset.class);
-    });
-</script>
+    </script>
+</body>
+</html>
