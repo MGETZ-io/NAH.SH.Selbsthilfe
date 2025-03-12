@@ -52,20 +52,7 @@
             color: #4B4B4B; /* Dunkles Grau für Docs */
         }
 
-        /* Blaues Dreieck in der unteren rechten Ecke */
-        .triangle {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 0;
-            height: 0;
-            border-left: 100vw solid transparent; /* Dreieck von links */
-            border-bottom: 50vh solid #001E49; /* Spitze nach unten rechts bis zur Mitte */
-            border-top: 0 solid transparent; /* Keine obere Seite */
-            z-index: -1;
-        }
-
-        /* Contentbereich */
+        /* Contentbereich (PDF-ähnlich) */
         .content {
             margin-top: 100px; /* Platz für den fixierten Header */
             padding: 20px;
@@ -77,6 +64,10 @@
             overflow-y: auto;
             height: calc(100vh - 120px);
             scroll-behavior: smooth;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9; /* PDF-ähnlicher Hintergrund */
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
 
         .content p {
@@ -124,6 +115,24 @@
         .popup-visible {
             display: block;
         }
+
+        /* Blaues Dreieck - Wird nur angezeigt, wenn der Text nicht zu lang ist */
+        .triangle {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-left: 100vw solid transparent; /* Dreieck von links */
+            border-bottom: 50vh solid #001E49; /* Spitze nach unten rechts bis zur Mitte */
+            border-top: 0 solid transparent; /* Keine obere Seite */
+            z-index: -1;
+        }
+
+        /* Wenn der Inhalt zu lang ist, wird das Dreieck entfernt */
+        .content-long {
+            padding-bottom: 100px; /* Genügend Platz für Scrollen */
+        }
     </style>
 </head>
 <body>
@@ -136,7 +145,7 @@
     </div>
 
     <!-- Inhalt der Seite -->
-    <div class="content">
+    <div class="content" id="content">
         <!-- Titel für das Dokument -->
         <h1>Info_Test_01</h1>
         <!-- Beispieltext in Arial mit Lorem Ipsum -->
@@ -156,10 +165,16 @@
             interdum lectus bibendum id. Quisque scelerisque velit ut dolor cursus, et consequat leo sollicitudin. Etiam in arcu ut purus 
             fermentum ullamcorper vel sit amet leo.
         </p>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod ex non arcu viverra, nec tincidunt lectus dapibus. 
+            Nulla facilisi. Fusce tristique sapien vel urna dictum, vel pharetra metus ullamcorper. Integer aliquet sapien sit amet ante 
+            gravida, ac cursus dui facilisis. Mauris a erat at odio efficitur posuere. Curabitur venenatis vestibulum nisi, et vulputate 
+            magna volutpat a. Sed vel dui ac mi mollis auctor. Integer aliquet eros nec eros faucibus, at convallis lorem varius.
+        </p>
     </div>
 
-    <!-- Blaues Dreieck -->
-    <div class="triangle"></div>
+    <!-- Blaues Dreieck - Nur sichtbar, wenn der Text nicht zu lang ist -->
+    <div class="triangle" id="triangle"></div>
 
     <!-- Popup mit Begrüßungstext -->
     <div class="popup" id="popup">
@@ -175,6 +190,13 @@
             setTimeout(function() {
                 document.getElementById("popup").classList.add("popup-visible");
             }, 500);  // Zeigt das Popup nach 500ms
+
+            // Wenn der Inhalt zu lang ist, entfernen wir das Dreieck
+            let contentHeight = document.getElementById("content").scrollHeight;
+            if (contentHeight > window.innerHeight) {
+                document.getElementById("triangle").style.display = 'none';
+                document.getElementById("content").classList.add('content-long');
+            }
         }
 
         // Popup schließen
