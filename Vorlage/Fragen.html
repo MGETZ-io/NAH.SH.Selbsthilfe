@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAH.SH - Selbsthilfe</title>
+    <link rel="icon" type="image/svg+xml" href="Logo.svg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Logo links, Text rechts */
+            padding: 20px;
+            background-color: #006F6A; /* Helles Türkis für den Header */
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        /* Linker Teil mit Logo und Selbsthilfe */
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .header-left .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Text rechts */
+        .header-right {
+            text-align: center; /* Zentriert den Text */
+            color: lightgray; /* Helles Grau für den Text */
+            width: 50%; /* Sicherstellen, dass der Text mittig bleibt */
+        }
+
+        .header-right .subtitle {
+            font-size: 22px;
+            font-weight: bold; /* Fettgedruckt */
+            color: #d1d1d1; /* Noch helleres Grau für den "Der echte Norden" Text */
+        }
+
+        .separator {
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        /* Fragebereich */
+        .question {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 150px; /* Platz für den fixierten Header */
+            text-align: center;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .option {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid #006F6A;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .option:hover {
+            background-color: #006F6A;
+            color: white;
+        }
+
+        /* Blaues Dreieck */
+        .triangle {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-left: 100vw solid transparent;
+            border-bottom: 50vh solid #001E49;
+            border-top: 0 solid transparent;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <!-- Linker Teil mit Logo und Selbsthilfe -->
+        <div class="header-left">
+            <img src="Logo.svg" alt="NAH.SH Logo">
+            <div class="title">Selbsthilfe</div>
+        </div>
+        <!-- Rechter Teil mit Schleswig-Holstein und Der echte Norden -->
+        <div class="header-right">
+            <div>Schleswig-Holstein</div>
+            <div class="subtitle">Der echte Norden</div>
+        </div>
+    </div>
+
+    <!-- Fragebereich -->
+    <div class="question">
+        Wo arbeitest du?
+    </div>
+
+    <div class="options">
+        <!-- Antwortoptionen -->
+        <div class="option" onclick="window.location.href = '/docs/help/RemoteCitrix.html';">
+            Remote / Citrix
+        </div>
+        <div class="option" onclick="window.location.href = '/docs/help/LokalBueru.html';">
+            Lokal / Im Büro
+        </div>
+    </div>
+
+    <!-- Blaues Dreieck -->
+    <div class="triangle"></div>
+
+</body>
+</html>
