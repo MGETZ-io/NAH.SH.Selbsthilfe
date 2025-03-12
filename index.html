@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAH.SH Selbsthilfe</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: white;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            border-bottom: 3px solid #003366;
+        }
+
+        .header img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .question {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid #006699;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+            opacity: 1;
+        }
+
+        .option:hover {
+            background-color: #006699;
+            color: white;
+        }
+
+        .zoom {
+            transform: scale(1.2);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="LogoNahSHSH.png" alt="NAH.SH Logo">
+        <h2>Selbsthilfe</h2>
+    </div>
+
+    <div class="question">Wo arbeitest du?</div>
+    
+    <div id="option-container" class="options">
+        <div class="option" onclick="selectOption(this, 'remote')">Remote / Citrix</div>
+        <div class="option" onclick="selectOption(this, 'lokal')">Lokal / Im Büro</div>
+    </div>
+
+    <script>
+        // Struktur des Entscheidungsbaums
+        const optionData = {
+            "remote": [
+                { text: "VPN", id: "vpn" },
+                { text: "Citrix Client Probleme", id: "citrix" }
+            ],
+            "vpn": [
+                { text: "Verbindung bricht ab", id: "Artikel001" },
+                { text: "Langsame Verbindung", id: "Artikel002" }
+            ],
+            "citrix": [
+                { text: "Bildschirm friert ein", id: "Artikel003" },
+                { text: "Login nicht möglich", id: "Artikel004" }
+            ],
+            "lokal": [
+                { text: "Drucker funktioniert nicht", id: "drucker" },
+                { text: "Kein Internet", id: "internet" }
+            ],
+            "drucker": [
+                { text: "Kein Papierstau", id: "Artikel005" },
+                { text: "Treiberfehler", id: "Artikel006" }
+            ],
+            "internet": [
+                { text: "WLAN-Probleme", id: "Artikel007" },
+                { text: "LAN-Probleme", id: "Artikel008" }
+            ]
+        };
+
+        function selectOption(element, key) {
+            // Zoom-Animation
+            element.classList.add("zoom");
+            setTimeout(() => element.classList.remove("zoom"), 300);
+
+            // Entferne alte Optionen
+            document.getElementById("option-container").innerHTML = "";
+
+            // Prüfen, ob es weitere Unteroptionen gibt
+            if (optionData[key]) {
+                setTimeout(() => {
+                    document.querySelector(".question").innerText = "Was ist das Problem?";
+                    optionData[key].forEach(option => {
+                        const div = document.createElement("div");
+                        div.classList.add("option");
+                        div.innerText = option.text;
+                        div.onclick = () => selectOption(div, option.id);
+                        document.getElementById("option-container").appendChild(div);
+                    });
+                }, 300);
+            } else {
+                // Falls keine weiteren Optionen -> Weiterleitung zur Hilfeseite
+                setTimeout(() => {
+                    window.location.href = `/docs/help/${key}.html`;
+                }, 300);
+            }
+        }
+    </script>
+
+</body>
+</html>
