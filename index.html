@@ -117,7 +117,7 @@
                 } else if (key.endsWith(".Ende")) {
                     console.log("Ende erreicht, Weiterleitung zu:", tree[key]);
                     // Weiterleitung zur URL mit window.location.replace() für einen sauberen Redirect
-                    window.location.replace(tree[key]);
+                    window.location.href = tree[key]; // Redirect zur Zielseite
                 }
             }, 500);
         }
