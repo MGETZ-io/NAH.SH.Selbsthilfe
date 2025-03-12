@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAH.SH Docs - Zugriff verweigert</title>
+    <link rel="icon" type="image/svg+xml" href="Logo.svg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #001E49;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1;
+        }
+
+        /* Logo und Text */
+        .header img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .separator {
+            margin: 0 10px;
+            font-weight: bold;
+            color: #4B4B4B; /* Dunkles Grau für Trennstrich */
+        }
+
+        .subtitle {
+            font-size: 36px;
+            font-weight: bold;
+            color: #4B4B4B; /* Dunkles Grau für Docs */
+        }
+
+        /* Contentbereich (Zugriff verweigert) */
+        .content {
+            margin-top: 100px; /* Platz für den fixierten Header */
+            padding: 20px;
+            width: 80%;
+            max-width: 900px;
+            text-align: center;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9; /* PDF-ähnlicher Hintergrund */
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h1 {
+            font-size: 28px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 20px;
+            color: #FF0000; /* Rote Farbe für Fehler */
+        }
+
+        .content p {
+            font-size: 18px;
+        }
+
+        /* Popup */
+        .popup {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 2;
+            text-align: center;
+            display: none;
+        }
+
+        .popup button {
+            margin-top: 20px;
+            background-color: #FF007F;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .popup button:hover {
+            background-color: #e6006f;
+        }
+
+        /* Button beim Popup */
+        .popup-visible {
+            display: block;
+        }
+
+        /* Blaues Dreieck - Wird nur angezeigt, wenn der Text nicht zu lang ist */
+        .triangle {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-left: 100vw solid transparent; /* Dreieck von links */
+            border-bottom: 50vh solid #001E49; /* Spitze nach unten rechts bis zur Mitte */
+            border-top: 0 solid transparent; /* Keine obere Seite */
+            z-index: -1;
+        }
+
+        /* Wenn der Inhalt zu lang ist, wird das Dreieck entfernt */
+        .content-long {
+            padding-bottom: 100px; /* Genügend Platz für Scrollen */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header mit Logo und Titel -->
+    <div class="header">
+        <img src="Logo.svg" alt="NAH.SH Logo">
+        <span class="separator">|</span>
+        <span class="subtitle">Docs</span>
+    </div>
+
+    <!-- Inhalt der Seite -->
+    <div class="content" id="content">
+        <!-- Titel für das Dokument -->
+        <h1>Zugriff verweigert</h1>
+        <!-- Fehlermeldung -->
+        <p>Leider haben Sie keine Berechtigung, diese Seite anzusehen. Diese Seite ist nur für Administratoren freigegeben.</p>
+        <p>Wenn Sie glauben, dass dies ein Fehler ist, wenden Sie sich bitte an den Administrator.</p>
+    </div>
+
+    <!-- Blaues Dreieck - Nur sichtbar, wenn der Text nicht zu lang ist -->
+    <div class="triangle" id="triangle"></div>
+
+    <!-- Popup mit Begrüßungstext -->
+    <div class="popup" id="popup">
+        <p>Willkommen auf der NAH.SH Dokumentationsseite!</p>
+        <button onclick="closePopup()">Schließen</button>
+    </div>
+
+    <script>
+        // Header bleibt immer sichtbar, keine Animation mehr nötig
+
+        // Popup anzeigen
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById("popup").classList.add("popup-visible");
+            }, 500);  // Zeigt das Popup nach 500ms
+
+            // Wenn der Inhalt zu lang ist, entfernen wir das Dreieck
+            let contentHeight = document.getElementById("content").scrollHeight;
+            if (contentHeight > window.innerHeight) {
+                document.getElementById("triangle").style.display = 'none';
+                document.getElementById("content").classList.add('content-long');
+            }
+        }
+
+        // Popup schließen
+        function closePopup() {
+            document.getElementById("popup").classList.remove("popup-visible");
+        }
+    </script>
+
+</body>
+</html>
