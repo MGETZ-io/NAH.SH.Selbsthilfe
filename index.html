@@ -116,8 +116,8 @@
                     showNextQuestion(tree[key].next);
                 } else if (key.endsWith(".Ende")) {
                     console.log("Ende erreicht, Weiterleitung zu:", tree[key]);
-                    // Weiterleitung zur URL
-                    window.location.href = tree[key];
+                    // Weiterleitung zur URL mit window.location.replace() für einen sauberen Redirect
+                    window.location.replace(tree[key]);
                 }
             }, 500);
         }
